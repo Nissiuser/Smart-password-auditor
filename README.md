@@ -9,6 +9,12 @@ This is the **Version 2** of the **Smart Password Auditor**, now with a sleek an
 > ✅ Warns users not to test real passwords
 
 ---
+## 🔗 Live Demo
+
+Check out the live version of this project here:
+
+👉 [Smart Password Auditor (Web UI)](https://smart-password-auditor.onrender.com/)
+
 
 ## 🚀 Features
 
