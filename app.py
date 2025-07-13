@@ -3,6 +3,7 @@ import hashlib
 import requests
 import math
 import os
+import re  # <-- for regex-based sequence detection
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def check_strength(password):
     else:
         reasons.append("No uppercase letters")
 
-    if any(char in '!@#$%^&*()_+-=[]{};:\'\",.<>?/|' for char in password):
+    if any(char in '!@#$%^&*()_+-=[]{};:\'",.<>?/|' for char in password):
         score += 1
     else:
         reasons.append("No special characters")
@@ -35,7 +36,23 @@ def check_strength(password):
         score = 0
         reasons.append("Common password")
 
-    return ("Strong" if score >= 4 else "Weak"), reasons
+    # New: Check for repetitive sequences > 3
+    if re.search(r'(?:\d{4,})', password):
+        reasons.append("Too many digits in a row")
+
+    if re.search(r'(?:[a-zA-Z]{4,})', password):
+        reasons.append("Too many letters in sequence")
+
+    if re.search(r'([!@#$%^&*()_+\-=\[\]{};:\'",.<>?/|])\1{3,}', password):
+        reasons.append("Too many repeated special characters")
+
+    # Classification
+    if score >= 5 and not reasons:
+        return "Very Strong", []
+    elif score >= 4:
+        return "Strong", reasons
+    else:
+        return "Weak", reasons
 
 # ---------- Entropy Calculator ----------
 def calculate_entropy(password):
@@ -43,7 +60,7 @@ def calculate_entropy(password):
     if any(c.islower() for c in password): charset += 26
     if any(c.isupper() for c in password): charset += 26
     if any(c.isdigit() for c in password): charset += 10
-    if any(c in '!@#$%^&*()_+-=[]{};:\'\",.<>?/|' for c in password): charset += 32
+    if any(c in '!@#$%^&*()_+-=[]{};:\'",.<>?/|' for c in password): charset += 32
     if charset == 0:
         return 0.0
     entropy = len(password) * math.log2(charset)
