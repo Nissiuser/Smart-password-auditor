@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Password Auditor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fefefe;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .container {
+      text-align: center;
+    }
+    .input-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    input[type="password"],
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+    }
+    .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    .output {
+      margin-top: 1.5rem;
+    }
+    .warning {
+      color: orange;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .reason-list {
+      color: red;
+      font-size: 14px;
+      list-style: none;
+      padding: 0;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Smart Password Auditor</h1>
+    <form method="POST">
+      <div class="input-wrapper">
+        <input type="password" name="password" id="password" placeholder="Enter your password">
+        <span class="eye-icon" onclick="togglePassword()">👁️</span>
+      </div>
+      <br>
+      <button type="submit">Check</button>
+    </form>
+
+    {% if result %}
+    <div class="output">
+      <p><strong>Strength:</strong> <span style="color: {{ 'green' if result.strength == 'Strong' else 'red' }}">{{ result.strength }}</span></p>
+      <p><strong>Breached:</strong> <span style="color: {{ 'red' if result.breached else 'green' }}">{{ 'YES' if result.breached else 'NO' }}</span></p>
+      <p><strong>Entropy:</strong> {{ result.entropy }} bits</p>
+      {% if result.reasons %}
+        <ul class="reason-list">
+          {% for reason in result.reasons %}
+            <li>⚠️ {{ reason }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <p class="warning">⚠️ Don't use your actual passwords here.</p>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById("password");
+      input.type = input.type === "password" ? "text" : "password";
+    }
+  </script>
+</body>
+</html>
