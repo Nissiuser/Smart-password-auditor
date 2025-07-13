@@ -50,3 +50,11 @@ pip install -r requirements.txt
 
 # 5. Run the application
 python app.py
+
+## 🔐 Security Notice
+
+This tool does **not store or transmit** any passwords.  
+Breach checks are performed using the [Have I Been Pwned](https://haveibeenpwned.com/API/v3) API with **k-anonymity**: only the first 5 characters of the SHA-1 hash are sent, ensuring the full password remains private.
+
+No data is stored, logged, or reused in any way.
+
