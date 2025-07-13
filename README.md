@@ -28,6 +28,7 @@ Check out the live version of this project here:
 
 ## 🖼️ Screenshot
 
+<img width="683" height="564" alt="image" src="https://github.com/user-attachments/assets/71476b9a-f125-4df4-b9f6-c214a4437ea1" />
 
 ---
 
