@@ -3,7 +3,7 @@ import hashlib
 import requests
 import math
 import os
-import re  # <-- for regex-based sequence detection
+import re  
 
 app = Flask(__name__)
 
